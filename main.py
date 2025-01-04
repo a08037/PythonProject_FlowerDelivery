@@ -1,16 +1,48 @@
-# This is a sample Python script.
+import os
+import sys
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Добавляем путь к Django проекту
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'flower_delivery')))
 
+# Настроим Django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flower_delivery.settings")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Инициализируем Django
+import django
+django.setup()
 
+from orders.models import Flower, Order
+from aiogram import Bot, Dispatcher, types
+from aiogram.types import ParseMode
+from aiogram.utils import executor
+from django.conf import settings
 
-# Press the green button in the gutter to run the script.
+# Настройка логирования
+import logging
+logging.basicConfig(level=logging.INFO)
+
+bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
+dp = Dispatcher(bot)
+
+@dp.message_handler(commands=['start'])
+async def start(message: types.Message):
+    await message.reply("Здравствуйте! Я бот для оформления заказов.")
+
+@dp.message_handler(commands=['order'])
+async def order(message: types.Message):
+    # Пример обработки заказа
+    await message.reply("Ваш заказ принят!")
+
+def start_bot():
+    """Запуск Telegram бота"""
+    executor.start_polling(dp, skip_updates=True)
+
+def main():
+    """Основная функция для запуска всех процессов"""
+    print("Запуск проекта...")
+
+    # Можно добавить сюда вызов логики для бота или других задач
+    start_bot()
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
