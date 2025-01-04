@@ -25,6 +25,7 @@ FlowerDelivery предоставляет удобный интерфейс дл
 git clone https://github.com/your-username/FlowerDelivery.git
 cd FlowerDelivery
 
+
 ### 2. Создать и активировать виртуальное окружение:
 bash
 Копировать код
